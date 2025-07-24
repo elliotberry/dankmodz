@@ -4,3 +4,5 @@
 # Except for the dist directory
 !dist/**
 !icon.png
+!license
+readme.md

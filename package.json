@@ -3,9 +3,9 @@
   "displayName": "dankmodz",
   "description": "a couple of misc codemods for fun and profit",
   "publisher": "nehima",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "icon": "icon.png",
-  "repository": "git@github.com:elliotberry/very-cool-codemodz.git",
+  "repository": "git@github.com:elliotberry/dankmodz.git",
   "engines": {
     "vscode": "^1.90.0"
   },
@@ -17,36 +17,22 @@
   "contributes": {
     "commands": [
       {
-        "command": "dankmodz.fnToConst",
-        "title": "change all functions to const declarations"
-      },
-      {
-        "command": "dankmodz.renameFunction",
-        "title": "renameFunction"
-      },
-      {
-        "command": "dankmodz.templateLiteral",
-        "title": "templateLiteral"
-      },
-      {
-        "command": "dankmodz.transformToCamelCase",
-        "title": "transformToCamelCase"
+        "command": "dankmodz.vscodeMod",
+        "title": "DankModz: Convert Function to Const"
       }
     ]
   },
   "scripts": {
-    "lint": "eslint .",
-    "pretest": "yarn run lint",
-    "test": "node ./test/runTest.js"
+    "build": "node build.js && vsce package"
   },
   "devDependencies": {
-    "@vscode/vsce": "^3.2.0",
-    "eslint": "^9.13.0",
-    "vsce": "^2.15.0",
-     "esbuild": "^0.24.0"
+    "@vscode/vsce": "^3.4.2",
+    "esbuild": "^0.25.5",
+    "eslint": "^9.28.0",
+    "vsce": "^2.15.0"
   },
   "dependencies": {
-
-    "jscodeshift": "^17.0.0"
+    "esbuild-plugin-copy": "^2.1.1",
+    "jscodeshift": "^17.3.0"
   }
 }
