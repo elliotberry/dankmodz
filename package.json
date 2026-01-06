@@ -12,18 +12,24 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
-  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onCommand:dankmodz.vscodeMod"
+  ],
+  "main": "./extension.js",
   "contributes": {
     "commands": [
       {
         "command": "dankmodz.vscodeMod",
-        "title": "DankModz: Convert Function to Const"
+        "title": "DankModz: Apply Codemod",
+        "category": "Codemods"
       }
     ]
   },
   "scripts": {
-    "build": "node build.js && vsce package"
+    "build": "node build.js && vsce package",
+    "test": "node --test",
+    "test:watch": "node --test --watch",
+    "test:coverage": "node --test --experimental-test-coverage"
   },
   "devDependencies": {
     "@vscode/vsce": "^3.4.2",

@@ -1,6 +1,6 @@
 module.exports.title = 'test lol';
 module.exports.default = function transformer(file, api) {
-  console.log(Arguments);
+  console.log(arguments);
   const j = api.jscodeshift;
   const root = j(file.source);
 

@@ -1,13 +1,42 @@
 const transform = require('./lib/transform.js');
-const vscode = require('vscode');
 const path = require('path');
 const fsp = require('fs').promises;
+
+// In test environment, vscode might not be available
+let vscode;
+try {
+  vscode = require('vscode');
+} catch (e) {
+  // Mock vscode for testing
+  vscode = {
+    window: {
+      showErrorMessage: () => {},
+      showInformationMessage: () => {},
+      showQuickPick: () => Promise.resolve(null),
+      activeTextEditor: null
+    },
+    commands: {
+      registerCommand: () => ({ dispose: () => {} })
+    },
+    Range: class Range {
+      constructor(start, end) {
+        this.start = start;
+        this.end = end;
+      }
+    }
+  };
+}
 
 const { window, Range } = vscode;
 
 
 function deactivate() {}
 exports.deactivate = deactivate;
+
+// Export functions for testing
+exports.vscodemod = vscodemod;
+exports.getCodemods = getCodemods;
+exports.codemodSelection = codemodSelection;
 
 function codemodSelection(e, doc, sel, fn) {
   e.edit(function(edit) {
@@ -27,15 +56,23 @@ const basedir = path.resolve(__dirname, 'modz');
 
 function getCodemods() {
   return fsp.readdir(basedir)
-    .catch(err => window.showErrorMessage(err.message))
+    .catch(err => {
+      window.showErrorMessage(`Failed to read codemods directory: ${err.message}`);
+      return [];
+    })
     .then(files => files.filter(f => path.extname(f) === '.js'))
-    .then(items =>
-      items.map(i => require(path.join(basedir, i))).map(i => ({
-        label: i.title,
-        description: i.description,
-        fn: i
-      }))
-    );
+    .then(items => {
+      try {
+        return items.map(i => require(path.join(basedir, i))).map(i => ({
+          label: i.title,
+          description: i.description,
+          fn: i
+        }));
+      } catch (err) {
+        window.showErrorMessage(`Failed to load codemod: ${err.message}`);
+        return [];
+      }
+    });
 }
 
 function vscodemod() {

@@ -1,6 +1,7 @@
 const esbuild = require('esbuild')
 const path = require('path');
 const fs = require('fs');
+const { join } = require('path');
 // Define entry and output paths
 const entryFile = './extension.js';
 const outDir = 'dist';
